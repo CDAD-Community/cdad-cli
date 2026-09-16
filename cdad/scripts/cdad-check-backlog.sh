@@ -39,7 +39,7 @@ if [ -n "$DUP_EPICS" ]; then
 fi
 
 # --- duplicate Story IDs (unique project-wide, not just per-Epic) ---
-DUP_STORIES="$(grep -oE '^##### STORY-[0-9]+' "$BACKLOG" | sed 's/^##### //' | sort | uniq -d || true)"
+DUP_STORIES="$(grep -oE '^##### STORY-[0-9]+(\.[0-9]+)?' "$BACKLOG" | sed 's/^##### //' | sort | uniq -d || true)"
 if [ -n "$DUP_STORIES" ]; then
   echo "cdad-check-backlog: FAILED - duplicate Story IDs:" >&2
   echo "$DUP_STORIES" | sed 's/^/  /' >&2

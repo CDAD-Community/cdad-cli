@@ -380,7 +380,30 @@ Work tracked here that is not tied to a specific Story.
 
 What is actively being worked on right now.
 
-- None — no Story has moved past `Proposed` yet.
+- STORY-01.1 (Install the CDAD CLI) — Go module and Cobra CLI skeleton
+  created (`go.mod`, `cmd/cdad/main.go`, `cdad version` working).
+- STORY-01.2 (`cdad init`) — mechanical part implemented: detects the
+  target directory, creates `cdad/{adr,context,docs,proposals,scripts}/`
+  and a starter `cdad/backlog.md`, never overwrites existing paths, and
+  records each run in `cdad/CDAD-COMPLETION.md`. Deliberately does **not**
+  create the portable-core files (`AGENTS.md`, `README-CDAD.md`/`.es.md`)
+  or the generic `cdad/` docs (`INDEX.md`, `CHANGE-REQUEST.md`,
+  `INSTALLATION*`, `USAGE*`, `ADR-TEMPLATE.md`) — sourcing that canonical
+  content is `internal/artifacts` (bootstrap artifact acquisition), which
+  `cdad/context/stack.md` still marks pending/undecided. Reported as
+  "Pending" by `cdad init` rather than guessed at.
+- STORY-03.1 (`cdad validate`) — backlog structural-integrity check
+  (`internal/validator`) ported natively from `cdad/scripts/cdad-check-backlog.sh`:
+  duplicate Epic/Story ID detection, status-vocabulary enforcement, empty-Epic
+  warnings; exit 0/1/2 matches the shell script's contract. Unit-tested
+  (`go test ./internal/validator/...`). While porting, found and fixed a real
+  bug in `cdad-check-backlog.sh` itself: its Story-ID regex truncated at the
+  first `.`, so `STORY-01.1`/`STORY-01.2` collapsed to the same key and were
+  flagged as false-positive duplicates against this project's own backlog —
+  fixed in the script too. Other `cdad validate` checks (adapter matrix,
+  stack-map freshness) are not yet ported: adapter matching needs ADE
+  detection (EPIC-02), and stack-map freshness needs git integration
+  (`internal/git`, not yet built).
 
 ## Next Work
 
